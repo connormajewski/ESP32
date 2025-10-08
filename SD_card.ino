@@ -1,10 +1,5 @@
 #include "sd_read_write.h"
-#include "SD_MMC.h"
 #include <math.h>
-
-#define SD_MMC_CMD 15  //Please do not modify it.
-#define SD_MMC_CLK 14  //Please do not modify it.
-#define SD_MMC_D0 2    //Please do not modify it.
 
 #ifndef M_PI
 #define M_PI (3.141592654)
@@ -13,9 +8,27 @@
 double twopi = 2.00 * M_PI;
 
 void setup() {
+	
   delay(500);
+  
   Serial.begin(115200);
-  SD_MMC.setPins(SD_MMC_CLK, SD_MMC_CMD, SD_MMC_D0);
+  
+  int isSDInit = SDInit();
+  
+  if(!isSDInit){
+	 
+	Serial.println("Error initializing SD card.");
+	 
+  }
+  
+  else{
+	 
+	SDInfo();
+	  
+  }
+  
+  
+  /* SD_MMC.setPins(SD_MMC_CLK, SD_MMC_CMD, SD_MMC_D0);
   if (!SD_MMC.begin("/sdcard", true, true, SDMMC_FREQ_DEFAULT, 5)) {
     Serial.println("Card Mount Failed");
     return;
@@ -111,7 +124,7 @@ void setup() {
   editMonoWAVHeader(SD_MMC, "/test1.wav", (int) (s * d), 44100, 16);
 
   // Serial.printf("Total space: %lluMB\r\n", SD_MMC.totalBytes() / (1024 * 1024));
-  // Serial.printf("Used space: %lluMB\r\n", SD_MMC.usedBytes() / (1024 * 1024));
+  // Serial.printf("Used space: %lluMB\r\n", SD_MMC.usedBytes() / (1024 * 1024)); */
 }
 
 void loop() {

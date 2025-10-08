@@ -9,6 +9,13 @@
 
 #include "Arduino.h"
 #include "FS.h"
+#include "SD_MMC.h"
+
+#define SD_MMC_CMD 15  
+#define SD_MMC_CLK 14  
+#define SD_MMC_D0 2  
+
+#define CHUNK_SIZE 1024
 
 struct __attribute__((packed)) MonoWAVHeader {
 
@@ -30,6 +37,8 @@ struct __attribute__((packed)) MonoWAVHeader {
 
 // General IO functions.
 
+int SDInit();
+void SDInfo();
 void listDir(fs::FS &fs, const char * dirname, uint8_t levels);
 void createDir(fs::FS &fs, const char * path);
 void removeDir(fs::FS &fs, const char * path);

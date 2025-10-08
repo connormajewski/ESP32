@@ -1,5 +1,48 @@
 #include "sd_read_write.h"
 
+int SDInit(){
+
+	SD_MMC.setPins(SD_MMC_CLK, SD_MMC_CMD, SD_MMC_D0);
+	
+	if(!SD_MMC.begin("/sdcard", true, true, SDMMC_FREQ_DEFAULT, 5)) {
+		Serial.println("SD card could not be mounted.");
+		return 0;
+	}
+	
+	uint8_t cardType = SD_MMC.cardType();
+	
+	if(cardType == CARD_NONE){
+	
+		Serial.println("No SD_MMC card attatched.");
+		return 0;
+		
+	}
+	
+	Serial.println("SD card successfully mounted.");
+	
+	return 1;
+	
+}
+
+void SDInfo(){
+	
+	uint8_t cardType = SD_MMC.cardType();
+
+	Serial.printf("-------------------------\nSD_MMC card type: ");
+	
+	if(cardType == CARD_MMC) Serial.println("MMC.");
+	else if(cardType == CARD_SDSC) Serial.println("SDSC.");
+	else if(cardType == CARD_SDHC) Serial.println("SDHC.");
+	else Serial.println("Unknown.");
+	
+	uint64_t cardSize = SD_MMC.cardSize() / (CHUNK_SIZE * CHUNK_SIZE);
+	
+	Serial.printf("Total space: %lluMB\r\n", SD_MMC.totalBytes() / (CHUNK_SIZE * CHUNK_SIZE));
+	Serial.printf("Used space: %lluMB\r\n-------------------------\n", SD_MMC.usedBytes() / (CHUNK_SIZE * CHUNK_SIZE));
+	
+}
+
+
 void listDir(fs::FS &fs, const char *dirname, uint8_t levels) {
   Serial.printf("Listing directory: %s\n", dirname);
 
