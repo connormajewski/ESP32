@@ -31,7 +31,7 @@ void SDInfo(){
 	Serial.printf("-------------------------\nSD_MMC card type: ");
 	
 	if(cardType == CARD_MMC) Serial.println("MMC.");
-	else if(cardType == CARD_SDSC) Serial.println("SDSC.");
+	else if(cardType == CARD_SD) Serial.println("SDSC.");
 	else if(cardType == CARD_SDHC) Serial.println("SDHC.");
 	else Serial.println("Unknown.");
 	
