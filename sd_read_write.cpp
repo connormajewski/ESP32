@@ -243,78 +243,9 @@ void testFileIO(fs::FS &fs, const char *path) {
   file.close();
 }
 
-void createMonoWAVFile(fs::FS &fs, const char *path, uint32_t num_samples, uint32_t sample_rate, uint16_t bits_per_sample) {
-
-  struct MonoWAVHeader header;
-
-  int num_channels = 1;
-
-  memcpy(header.riff, "RIFF", 4);
-  header.chunk_size = 36 + (num_samples * num_channels * (bits_per_sample / 8));
-  memcpy(header.wave, "WAVE", 4);
-  memcpy(header.fmt, "fmt ", 4);
-  header.subchunk1_size = 16;
-  header.audio_format = 1;
-  header.num_channels = num_channels;
-  header.sample_rate = sample_rate;
-  header.byte_rate = sample_rate * num_channels * (bits_per_sample / 8);
-  header.block_align = num_channels * (bits_per_sample / 8);
-  header.bits_per_sample = bits_per_sample;
-  memcpy(header.data, "data", 4);
-  header.subchunk2_size = num_samples * num_channels * (bits_per_sample / 8);
-
-  File file = fs.open(path, FILE_WRITE);
-
-  if (!file) {
-
-    Serial.println("File could not be created.");
-
-    return;
-  }
-
-  size_t headerSize = sizeof(header);
-  size_t written = file.write((uint8_t *)&header, headerSize);
 
 
-  if (written == headerSize) {
 
-    Serial.print((uint16_t)written);
-    Serial.println(" bytes written successfullyy.");
-
-  }
-
-  else {
-
-    Serial.println("Data could not be written to file.");
-
-    return;
-  }
-
-  file.close();
-}
-
-void editMonoWAVHeader(fs::FS &fs, const char * path, uint32_t num_samples, uint32_t sample_rate, uint16_t bits_per_sample){
-
-  File file = fs.open(path, "r+");
-
-  if(!file){
-
-    return;
-
-  }
-
-  uint32_t subChunk2Size = num_samples * (bits_per_sample / 8);
-  uint32_t chunkSize = 36 + subChunk2Size;
-
-  file.seek(4);
-  file.write((uint8_t *)&chunkSize, 4);
-
-  file.seek(40);
-  file.write((uint8_t *)&subChunk2Size, 4);
-
-  file.close();
-
-}
 
 char * intToString(unsigned int num, int base){
 
