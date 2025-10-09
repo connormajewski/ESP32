@@ -1,4 +1,5 @@
 #include "mono_file.h"
+#include "i2s.h"
 
 void setup() {
 	
@@ -10,7 +11,7 @@ void setup() {
   
   if(!isSDInit){
 	 
-	Serial.println("Error initializing SD card.");
+	  Serial.println("Error initializing SD card.");
 	 
   }
   
@@ -18,14 +19,22 @@ void setup() {
 	 
 	  SDInfo();
 
-    writeSineWave(SD_MMC, "/sine.wav", 261.63, 5.00);
+    Serial.println("Initializing I2C.");
 
-    listDir(SD_MMC, "/", 0);
+    I2SInit();
+
+    // writeSineWave(SD_MMC, "/sine.wav", 261.63, 5.00);
+
+    // listDir(SD_MMC, "/", 0);
 	  
   }
 
 }
 
 void loop() {
-  delay(10000);
+  generateSineWave(261.63, 1.00);
+  generateSineWave(329.628, 1.00);
+  generateSineWave(392, 1.00);
+  generateSineWave(329.628, 1.00);
+  generateSineWave(261.63, 1.00);
 }
