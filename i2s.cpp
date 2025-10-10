@@ -1,4 +1,4 @@
-#include "i2c.h"
+#include "i2s.h"
 
 void I2SInit(){
 

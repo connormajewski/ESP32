@@ -73,7 +73,7 @@ void editMonoWAVHeader(fs::FS &fs, const char * path, uint32_t num_samples, uint
 
 }
 
-void writeSineWave(fs::FS &fs, const char * path, float frequency, float duration){
+void writeSineWave(fs::FS &fs, const char * path, float freq, float duration){
 
   createMonoWAVFile(fs, path, 44100, 44100, 16);
 
@@ -87,8 +87,6 @@ void writeSineWave(fs::FS &fs, const char * path, float frequency, float duratio
   uint16_t buffer[bufferSize];
 
   int j = 0;
-
-  double freq = 261.63;
 
   int i;
 
@@ -126,5 +124,55 @@ void writeSineWave(fs::FS &fs, const char * path, float frequency, float duratio
   file.close();
 
   editMonoWAVHeader(fs, path, (int) (s * duration), 44100, 16);
+
+}
+
+void printMonoWAVData(fs::FS &fs, const char * path){
+
+  File file = fs.open(path, FILE_READ);
+
+  if(!file){
+
+    Serial.printf("%s could not be opened.\n", path);
+
+    return;
+
+  }
+
+  uint16_t numChannels;
+  uint32_t sampleRate;
+  uint32_t fileSize;
+
+
+  file.seek(22);
+  file.read((uint8_t *)&numChannels, 2);
+
+  file.seek(24);
+  file.read((uint8_t *)&sampleRate, 4);
+
+  file.seek(40);
+  file.read((uint8_t *)&fileSize, 4);
+
+  Serial.printf("\nFILE INFO:\n\nNUM CHANNELS: %d\nSAMPLE RATE: %d\nDuration: %.2fs\n\n", numChannels, sampleRate, (double) (fileSize / sampleRate / 2));
+
+  file.close();
+
+}
+
+void playMonoWAVFile(fs::FS &fs, const char * path){
+
+  File file = fs.open(path, "r");
+
+  if(!file){
+
+    Serial.printf("%s could not be opened.\n", path);
+
+    return;
+
+  }
+
+  Serial.printf("Opened %s\n", path);
+
+  file.close();
 
 }
