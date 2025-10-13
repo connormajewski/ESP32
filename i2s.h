@@ -14,6 +14,6 @@
 #define I2S_DO_IO       25
 
 void I2SInit();
-void generateSineWave(double freq, double duration);
+void generateSineWave(double freq, double duration, float amplitude);
 
 #endif

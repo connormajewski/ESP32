@@ -32,7 +32,7 @@ void I2SInit(){
 
 }
 
-void generateSineWave(double freq, double duration){
+void generateSineWave(double freq, double duration, float amplitude){
 
   uint16_t sampleBuffer[256];
 
@@ -56,7 +56,7 @@ void generateSineWave(double freq, double duration){
 
       if(phase > 2.0f * PI) phase -= 2.0f * PI;
 
-      sampleBuffer[i] = (uint16_t)(AMPLITUDE * sample);
+      sampleBuffer[i] = (uint16_t)(AMPLITUDE * sample * amplitude);
 
       currentSample++;
 

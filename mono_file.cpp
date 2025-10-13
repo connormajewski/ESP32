@@ -1,4 +1,5 @@
 #include "mono_file.h"
+#include "i2s.h"
 
 void createMonoWAVFile(fs::FS &fs, const char *path, uint32_t num_samples, uint32_t sample_rate, uint16_t bits_per_sample) {
 
@@ -98,13 +99,7 @@ void writeSineWave(fs::FS &fs, const char * path, float freq, float duration){
 
   for (i = 0; i < (s * duration); i++) {
 
-    // double root = (sin(M_TWO_PI * freq * ((double)i / 44100)));
-    // double third = (sin(M_TWO_PI * 329.628 * ((double)i / 44100)));
-    // double fifth = (sin(M_TWO_PI * 392.00 * ((double)i / 44100)));
-
-    // buffer[j++] = (uint16_t)(((root + third + fifth) / 3.0) * 32767);
-
-    buffer[j++] = (uint16_t)(sin(M_TWO_PI * freq * ((double)i / 44100)) * 32767);
+    buffer[j++] = (uint16_t)((sin(M_TWO_PI * freq * ((double)i / 44100)) * 32767) * 0.5f);
 
     if (j == bufferSize) {
 
@@ -163,6 +158,9 @@ void playMonoWAVFile(fs::FS &fs, const char * path){
 
   File file = fs.open(path, "r");
 
+  size_t bytes_read;
+  uint16_t buffer[256];
+
   if(!file){
 
     Serial.printf("%s could not be opened.\n", path);
@@ -172,6 +170,14 @@ void playMonoWAVFile(fs::FS &fs, const char * path){
   }
 
   Serial.printf("Opened %s\n", path);
+
+  file.seek(44);
+
+  while(file.available() && (bytes_read = file.read((uint8_t *)buffer, sizeof(buffer))) > 0){
+
+    i2s_write(I2S_NUM_0, &buffer, sizeof(buffer), &bytes_read, portMAX_DELAY);
+
+  }
 
   file.close();
 
