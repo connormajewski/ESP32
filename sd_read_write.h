@@ -17,6 +17,7 @@
 int SDInit();
 void SDInfo();
 void listDir(fs::FS &fs, const char * dirname, uint8_t levels);
+std::vector<String> getDirFilePaths(fs::FS &fs, const char * dirname);
 void createDir(fs::FS &fs, const char * path);
 void removeDir(fs::FS &fs, const char * path);
 void readFile(fs::FS &fs, const char * path);

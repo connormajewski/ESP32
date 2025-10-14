@@ -72,6 +72,45 @@ void listDir(fs::FS &fs, const char *dirname, uint8_t levels) {
     }
     file = root.openNextFile();
   }
+
+}
+
+std::vector<String> getDirFilePaths(fs::FS &fs, const char * dirname){
+
+  std::vector<String> filepaths = {};
+
+  File root = fs.open(dirname);
+
+  if (!root) {
+
+    Serial.println("Failed to open directory");
+    return filepaths;
+
+  }
+
+  if (!root.isDirectory()) {
+
+    Serial.println("Not a directory");
+    return filepaths;
+
+  }
+
+  File file = root.openNextFile();
+
+  while (file) {
+
+    if (!file.isDirectory()) {
+
+      filepaths.push_back(file.name());
+
+    } 
+
+    file = root.openNextFile();
+
+  }
+
+  return filepaths;
+
 }
 
 void createDir(fs::FS &fs, const char *path) {
