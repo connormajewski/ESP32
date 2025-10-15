@@ -41,43 +41,43 @@ void monoWAVTest(){
 
   listDir(SD_MMC, "/", 0);
 
-  Serial.println("Testing sine wave generation...");
+  // Serial.println("Testing sine wave generation...");
 
-  for(int i=3;i>0;i--){
+  // for(int i=3;i>0;i--){
 
-    Serial.println(i);
+  //   Serial.println(i);
 
-  }
+  // }
 
-  generateSineWave(261.63, 1.00, 1.00);
-  generateSineWave(329.628, 1.00, 0.8);
-  generateSineWave(392, 1.00, 0.6);
-  generateSineWave(329.628, 1.00, 0.4);
-  generateSineWave(261.63, 1.00, 0.2);
+  // generateSineWave(261.63, 1.00, 1.00);
+  // generateSineWave(329.628, 1.00, 0.8);
+  // generateSineWave(392, 1.00, 0.6);
+  // generateSineWave(329.628, 1.00, 0.4);
+  // generateSineWave(261.63, 1.00, 0.2);
 
-  Serial.println("Testing playing from file.");
+  // Serial.println("Testing playing from file.");
 
-  int i;
+  // int i;
 
-  for(i=3;i>0;i--){
+  // for(i=3;i>0;i--){
 
-    Serial.println(i);
+  //   Serial.println(i);
 
-    delay(1000);
+  //   delay(1000);
 
-  }
+  // }
 
-  Serial.println("Playing 5.wav");
+  // Serial.println("Playing 5.wav");
 
-  playMonoWAVFile(SD_MMC, "/5.wav");
+  // playMonoWAVFile(SD_MMC, "/5.wav");
 
-  Serial.println("Playing 10.wav");
+  // Serial.println("Playing 10.wav");
 
-  playMonoWAVFile(SD_MMC, "/10.wav");
+  // playMonoWAVFile(SD_MMC, "/10.wav");
 
-  Serial.println("Playing 7.wav");
+  // Serial.println("Playing 7.wav");
 
-  playMonoWAVFile(SD_MMC, "/7.wav");
+  // playMonoWAVFile(SD_MMC, "/7.wav");
 
 }
 
@@ -103,9 +103,9 @@ void setup() {
 
     I2SInit();
 
-    //monoWAVTest();
+    monoWAVTest();
 
-    playTest("/speaking.wav");
+    //playTest("/speaking.wav");
 
   }
 
