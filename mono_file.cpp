@@ -159,7 +159,10 @@ void playMonoWAVFile(fs::FS &fs, const char * path){
   File file = fs.open(path, "r");
 
   size_t bytes_read;
+  size_t bytes_written;
   uint16_t buffer[256];
+  int16_t * samples;
+  size_t sampleCount;
 
   if(!file){
 
@@ -175,7 +178,15 @@ void playMonoWAVFile(fs::FS &fs, const char * path){
 
   while(file.available() && (bytes_read = file.read((uint8_t *)buffer, sizeof(buffer))) > 0){
 
-    i2s_write(I2S_NUM_0, &buffer, sizeof(buffer), &bytes_read, portMAX_DELAY);
+    sampleCount = bytes_read / 2;
+
+    samples = (int16_t*)buffer;
+
+    for(size_t i = 0; i < sampleCount; i++){
+        samples[i] = (samples[i] * 0.2); // halve amplitude
+    }
+
+    i2s_write(I2S_NUM_0, buffer, bytes_read, &bytes_written, portMAX_DELAY);
 
   }
 
